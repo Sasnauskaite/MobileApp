@@ -1,3 +1,3 @@
 ### MobileApp
 # v0.1 
-Mobile app with authentication (using only email and password)
+Mobile app with authentication (not properly working yet)
