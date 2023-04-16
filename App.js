@@ -1,38 +1,57 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Button, Text, View } from 'react-native';
+import { StyleSheet, Image, Button, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StatusBarStyle } from 'react-native';
+//import { StatusBarStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
-import CartScreen from './screens/CartScreen';
+import PostScreen from './screens/PostScreen';
 import Profile from './screens/ProfileScreen';
 import Messages from './screens/MessagesScreen';
 
 const Tab = createBottomTabNavigator();
 
+const CustomTabBarButton = ({ children, onPress }) => (
+  <TouchableOpacity
+    style={{
+      top: -30,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    onPress={onPress}
+  >
+    <View style={{
+      width: 70,
+      height: 70, 
+      borderRadius: 35,
+      backgroundColor: '#e32f35'
+    }}>
+      {children}
+    </View>
+  </TouchableOpacity>
+);
 
 export default function App() {
   return (
     <NavigationContainer>
-    <StatusBar backgroundColor='#AFD0F3'/>
-      < Tab.Screen 
-        name="Login"
-        component={LoginScreen} 
-        options={{ 
-          headerShown: false 
-        }}  
-      />
+      <StatusBar backgroundColor='#AFD0F3'/>
       <Tab.Navigator 
+        initialRouteName="Login"
         screenOptions={{
           tabBarShowLabel: false,
-          tabBarActiveBackgroundColor: '#7DC2FF',
-          tabBarInactiveBackgroundColor: '#fff'
         }}>
-        < Tab.Screen 
+        <Tab.Screen 
+          name="Login"
+          component={LoginScreen} 
+          options={{ 
+            headerShown: false,
+            tabBarStyle: {display: 'none'},
+            tabBarItemStyle: {display: 'none'},
+          }}
+        />
+        <Tab.Screen 
           name="SHOP" 
           component={HomeScreen} 
           options={{
@@ -42,26 +61,31 @@ export default function App() {
             headerStyle: {
               backgroundColor: '#AFD0F3',
             },
-            headerRight: () => (
+            headerRight: ({focused}) => (
               <Ionicons 
                 name='chatbubbles-outline' 
-                color='#0B5799' 
+                color={focused ? '#e32f35' : '#0B5799'} 
                 onPress={() => 
-                alert('We are sorry, but this action is not available right now... We are working on it!')}
+                  alert('We are sorry, but this action is not available right now... We are working on it!')
+                }
                 underlayColor='#fff'
                 size={35}
                 style={{marginRight: 15}}
               />
             ),
             tabBarLabel: 'SHOP',
-            tabBarIcon: ({size}) => (
-              <Ionicons name="menu" color={'#0B5799'} size={size} />
+            tabBarIcon: ({focused, color, size}) => (
+              <Ionicons 
+                name={focused ? "menu" : 'menu'} 
+                color={focused ? '#e32f35' : '#0B5799'} 
+                size={40} 
+              />
             ),
           }}
         />
-        < Tab.Screen  
-          name="CART"
-          component={CartScreen} 
+        <Tab.Screen 
+          name="ADDING NEW ITEM" 
+          component={PostScreen}
           options={{
             headerShown: true,
             headerShadowVisible: true,
@@ -69,10 +93,10 @@ export default function App() {
             headerStyle: {
               backgroundColor: '#AFD0F3',
             },
-            headerRight: () => (
+            headerRight: ({focused}) => (
               <Ionicons 
                 name='chatbubbles-outline' 
-                color='#0B5799' 
+                color={focused ? '#e32f35' : '#0B5799'} 
                 onPress={() => 
                 alert('We are sorry, but this action is not available right now... We are working on it!')}
                 underlayColor='#fff'
@@ -80,13 +104,24 @@ export default function App() {
                 style={{marginRight: 15}}
               />
             ),
-            tabBarLabel: 'CART',
-            tabBarIcon: ({size}) => (
-              <Ionicons name="cart" color={'#0B5799'} size={size} />
+            tabBarLabel: 'ADD',
+            tabBarIcon: ({}) => (
+              <Image
+                source={require('./assets/plus.png')}
+                resizeMode='contain'
+                style={{
+                  width: 30, 
+                  height: 30,
+                  tintColor: '#fff'
+                }}
+              />
             ),
+            tabBarButton: (props) => (
+              <CustomTabBarButton {...props} />
+            )
           }}
         />
-        < Tab.Screen 
+        <Tab.Screen 
           name="PROFILE" 
           component={Profile} 
           options={{
@@ -96,10 +131,10 @@ export default function App() {
             headerStyle: {
               backgroundColor: '#AFD0F3',
             },
-            headerRight: () => (
+            headerRight: ({focused}) => (
               <Ionicons 
                 name='chatbubbles-outline' 
-                color='#0B5799' 
+                color={focused ? '#e32f35' : '#0B5799'} 
                 onPress={() => 
                 alert('We are sorry, but this action is not available right now... We are working on it!')}
                 underlayColor='#fff'
@@ -108,8 +143,12 @@ export default function App() {
               />
             ),
             tabBarLabel: 'PROFILE',
-            tabBarIcon: ({size}) => (
-              <Ionicons name="person" color={'#0B5799'} size={size} />
+            tabBarIcon: ({focused, color, size}) => (
+              <Ionicons 
+                name={focused ? 'person' : 'person'} 
+                color={focused ? '#e32f35' : '#0B5799'} 
+                size={30} 
+              />
             ),
           }}
         />

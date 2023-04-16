@@ -2,15 +2,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-function CartScreen() {
+function PostScreen() {
   return (
     <View style={styles.container}>
-        <Text>Cart Screen</Text>
+        <Text>Post Screen</Text>
     </View>
   )
 }
 
-export default CartScreen
+export default PostScreen
 
 const styles = StyleSheet.create({
     container: {
