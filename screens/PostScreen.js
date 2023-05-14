@@ -1,11 +1,9 @@
 
-import { StyleSheet, Text, View, Spacer, KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, Text, View, Image, Alert} from 'react-native';
 import React from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import { auth } from '../firebase';
-import { TouchableOpacity } from 'react-native-web';
-import { Ionicons } from '@expo/vector-icons';
-import { Card } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native';
 
 function PostScreen() {
   const username = auth.currentUser.email;
@@ -43,23 +41,39 @@ function PostScreen() {
         />
         <Text style={styles.WhatIask4}>Image of item for sale: </Text>
         <View style={[styles.columns, {alignItems: 'center', paddingTop: 10}]}>
-            <Button style={styles.cardStyle}>
-              <Ionicons
-                name='ios-image-outline'
-                color={'#0B5799'} 
-                size={60} 
+            <TouchableOpacity style={styles.cardStyle}
+              onPress={() => 
+                alert('We are sorry, but this action is not available right now... We are working on it!')}>
+              <Image
+                source={require('./galery.png')}
+                resizeMode='contain'
+                style={{
+                  alignSelf: 'center',
+                  width: 100, 
+                  height: 100,
+                }}
               />
-            </Button>
-            <Button style={styles.cardStyle}>
-              <Ionicons
-                name='md-camera-outline'
-                color={'#0B5799'} 
-                size={60}
+              <Text style={styles.selection}>Select from galery</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cardStyle}
+              onPress={() => 
+                alert('We are sorry, but this action is not available right now... We are working on it!')}>
+              <Image
+                source={require('./camera.png')}
+                resizeMode='contain'
+                style={{
+                  alignSelf: 'center',
+                  width: 100, 
+                  height: 100,
+                }}
               />
-            </Button>
+              <Text style={styles.selection}>Take a photo</Text>
+            </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-          <Button style={styles.button}>
+          <Button style={styles.button}
+          onPress={() => 
+            alert('We are sorry, but this action is not available right now... We are working on it!')}>
             <Text style={styles.buttonText}>POST</Text>
           </Button>
         </View>
@@ -73,8 +87,6 @@ export default PostScreen
 const styles = StyleSheet.create({
     mainContainer: {
       flex: 1,
-      //justifyContent: 'center',
-      //alignItems: 'center',
       backgroundColor: '#AFD0F3',
     }, 
     columns: {
@@ -82,9 +94,10 @@ const styles = StyleSheet.create({
       alignItems: 'flex-start',
     },
     selection: {
+      alignSelf: 'center',
       paddingBottom: 10,
       color:'#0B5799', 
-      fontSize:15,
+      fontSize:18,
     },
     cardStyle: {
       width: '45%',
@@ -120,13 +133,13 @@ const styles = StyleSheet.create({
       marginTop: 1,
     },
     button: {
-      backgroundColor: 'white',
-      marginTop: 5,
+      backgroundColor: '#44A0FF',//'white',
+      marginTop: 25,
       borderColor: '#44A0FF',
       borderWidth: 2,
     },
     buttonText: {
-      color: '#44A0FF',
+      color: 'white',//'#44A0FF',
       fontWeight: '700',
       fontSize: 20,
     },
