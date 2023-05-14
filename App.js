@@ -3,7 +3,6 @@ import React from 'react';
 import { StyleSheet, Image, Button, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-//import { StatusBarStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
