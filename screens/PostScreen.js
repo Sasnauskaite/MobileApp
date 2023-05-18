@@ -1,12 +1,79 @@
 
 import { StyleSheet, Text, View, Image, Alert} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react'
 import { Button, TextInput } from 'react-native-paper';
 import { auth } from '../firebase';
 import { TouchableOpacity } from 'react-native';
+//import { getDatabase } from 'firebase/database';
+import { getDatabase, ref, push, set } from 'firebase/database';
 
 function PostScreen() {
   const username = auth.currentUser.email;
+  const user = auth.currentUser.uid;
+
+  const [description, setDescription] = useState("");
+  const [contacts, setContacts] = useState("");
+  const [price, setPrice] = useState("");
+
+  
+
+  function createPost(username, description, contacts, price) {
+    console.log('Username:', username);
+    console.log('Description:', description);
+    console.log('Contacts:', contacts);
+    console.log('Price:', price);
+  
+    const database = getDatabase();
+    const postsRef = ref(database, 'itemsForSale');
+    
+    const newPostRef = push(postsRef);
+    const newPostKey = newPostRef.key;
+    
+    const postData = {
+      username: username,
+      description: description,
+      contacts: contacts,
+      price: price
+    };
+  
+    set(newPostRef, postData)
+      .then(() => {
+        console.log('Data saved successfully!');
+      })
+      .catch((error) => {
+        console.error('Error saving data:', error);
+      });
+  }
+
+
+/*
+  function createPost (username, description, contacts, price) {
+    console.log('UID: ', user)
+    console.log('text: ', username)
+    console.log('description: ', description)
+    console.log('contacts: ', contacts)
+    console.log('price: ', price)
+
+    //const postRef = ref.child('itemsForSale');
+    
+    const database = getDatabase();
+    const postsRef = database().ref('https://sellart-s-default-rtdb.europe-west1.firebasedatabase.app/');
+    console.log('IM HERE')
+    const newPost = postsRef.push();
+    newPost.push().set({
+        username: {username},
+        description: {description},
+        contacts: {contacts},
+        price: {price}
+    }).then((data)=>{
+      //success callback
+      console.log('Saved data: ', data)
+    }).catch((error)=>{
+      //error callback
+      console.log('Error occured: ', error)
+    })
+  }
+  */
   return (
     <View style={styles.mainContainer}>
       <View style={styles.mainInfoView}>
@@ -17,27 +84,41 @@ function PostScreen() {
       <View>
         <Text style={styles.WhatIask4}>Item description:</Text>
         <TextInput 
-          placeholder={"Describe the item that you're selling"}
-          keyboard={'default'}
-          multiline={true}
           style={styles.input}
+          placeholder={"Describe the item that you're selling"}
+          keyboardType={'default'}
+          editable
+          maxLength={200}
           inputStyle={{
+            marginHorizontal: 5,
+            marginBottom: 5,
+            borderRadius: 5,
             height: 130,
             paddingHorizontal: 10,
-            textAlignVertical: 'top',
+            //textAlignVertical: 'top',
           }}
+          multiline
+          numberOfLines={5}
+          activeUnderlineColor="red"
+          onChangeText={text => setDescription(text)}
         />
         <Text style={styles.WhatIask4}>Contacts:</Text>
         <TextInput 
           placeholder={"Please input your contact information"}
-          keyboard={'default'}
+          keyboardType={'default'}
           multiline={false}
           style={styles.inputContact}
-          inputStyle={{
-            height: 130,
-            paddingHorizontal: 10,
-            textAlignVertical: 'top',
-          }}
+          activeUnderlineColor='red'
+          onChangeText={text => setContacts(text)}
+        />
+        <Text style={styles.WhatIask4}>Price of the item: </Text>
+        <TextInput 
+          placeholder={"Please input the desireable price in EUR"}
+          keyboardType={'numeric'}
+          multiline={false}
+          style={styles.inputPrice}
+          activeUnderlineColor='red'
+          onChangeText={text => setPrice(text)}
         />
         <Text style={styles.WhatIask4}>Image of item for sale: </Text>
         <View style={[styles.columns, {alignItems: 'center', paddingTop: 10}]}>
@@ -49,8 +130,8 @@ function PostScreen() {
                 resizeMode='contain'
                 style={{
                   alignSelf: 'center',
-                  width: 100, 
-                  height: 100,
+                  width: 70, 
+                  height: 70,
                 }}
               />
               <Text style={styles.selection}>Select from galery</Text>
@@ -63,8 +144,8 @@ function PostScreen() {
                 resizeMode='contain'
                 style={{
                   alignSelf: 'center',
-                  width: 100, 
-                  height: 100,
+                  width: 70, 
+                  height: 70,
                 }}
               />
               <Text style={styles.selection}>Take a photo</Text>
@@ -73,7 +154,7 @@ function PostScreen() {
         <View style={styles.buttonContainer}>
           <Button style={styles.button}
           onPress={() => 
-            alert('We are sorry, but this action is not available right now... We are working on it!')}>
+            {createPost(username, description, contacts, price)}}>
             <Text style={styles.buttonText}>POST</Text>
           </Button>
         </View>
@@ -111,14 +192,17 @@ const styles = StyleSheet.create({
     },
     input: {
       backgroundColor: '#D6EDFF',
+    },
+    inputContact: {
+      backgroundColor: '#D6EDFF',
       marginHorizontal: 5,
       marginBottom: 5,
       borderRadius: 5,
-      height: 130,
+      height: 50,
       paddingHorizontal: 10,
       textAlignVertical: 'top',
     },
-    inputContact: {
+    inputPrice: {
       backgroundColor: '#D6EDFF',
       marginHorizontal: 5,
       marginBottom: 5,

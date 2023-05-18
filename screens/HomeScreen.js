@@ -3,17 +3,19 @@ import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import { ScrollView } from 'react-native'
+import { getDatabase, ref, onValue } from 'firebase/database';
+import { DataSnapshot } from 'firebase/database';
+
+
 
 
 const HomeScreen = () => {
+
   return (
-    <View>
-      <ScrollView style={styles.scrollContainer}>
-        <KeyboardAvoidingView 
-          style={styles.container}>
-          <Text>Home Screen</Text>
+    <View style={styles.container}>
+        <KeyboardAvoidingView >
+          <Text style={styles.selection}>HELLO</Text>
         </KeyboardAvoidingView>
-      </ScrollView>
     </View>
   )
 }
@@ -27,6 +29,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#AFD0F3',
   }, 
+  selection: {
+    alignSelf: 'center',
+    paddingBottom: 10,
+    color:'#0B5799', 
+    fontSize:18,
+  },
   scrollContainer: {
     flex: 1,
     backgroundColor: '#AFD0F3',

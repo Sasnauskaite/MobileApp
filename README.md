@@ -11,3 +11,7 @@ Fixed authentication and a bit changed bottom tab navigator
 #v0.3
 
 Added simple type of new item posting availability
+
+#v0.4
+
+Added a posting availability with saving into firebase realtime database

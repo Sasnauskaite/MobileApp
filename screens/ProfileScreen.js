@@ -6,20 +6,25 @@ import { Button } from 'react-native-paper'
 import { auth } from '../firebase';
 
 const ProfileScreen = () => {
+  const username = auth.currentUser.email;
   const navigation = useNavigation()
   const logout = () => {
+    auth.signOut();
     navigation.navigate('Login');
-    console.log('Logged out of ', auth.currentUser.email, ' account!')
+    console.log('Logged out of ', username, ' account!')
   }
   return (
     <View style={styles.container}>
-      <Button style={styles.button}
-        onPress={()=>{
-          logout();
-        }}
-      >
-        <Text style={styles.buttonText}>LOG OUT</Text>
-      </Button>
+      <Text style={styles.userName}>Logged in as: </Text><Text style={styles.userName2}>{username}</Text>
+      <View style={styles.container}>
+        <Button style={styles.button}
+          onPress={()=>{
+            logout();
+          }}
+        >
+          <Text style={styles.buttonText}>LOG OUT</Text>
+        </Button>
+      </View>
     </View>
   )
 }
@@ -44,4 +49,14 @@ const styles = StyleSheet.create({
       fontWeight: '700',
       fontSize: 20,
     },
+    userName: {
+      color: '#0B5799',
+      fontStyle: 'italic',
+      fontSize: 20,
+    },
+    userName2: {
+      color: 'red',
+      fontStyle: 'italic',
+      fontSize: 25,
+    }
   })
